@@ -58,8 +58,7 @@ int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
             break;
         }
     }
-    // std::cout << first_free_index;
-    return first_free_row;
+    return first_free_row;  // returns -1 if ther is no available slot
 }
 
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player)
