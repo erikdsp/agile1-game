@@ -1,6 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <string>
 #include <curses.h>
 
+enum TILE {
+    EMPTY,
+    PLAYER1,
+    PLAYER2
+};
+
+class Player {
+    std::string name;
+    int blasts;    
+};
+
+void print_ncurses();
+void print_board_test(auto b);
+
 int main()
+{
+    std::vector<std::vector<TILE>> board (7, std::vector<TILE>(6, TILE::EMPTY));
+
+
+
+    return 0;
+}
+
+void print_board_test(auto b)
+{
+    for (int y = 0 ; y < 6 ; y++)
+    {
+        for (int x = 0 ; x < 7 ; x++)
+        {
+            std::cout << b[x][y] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void print_ncurses()
 {
     initscr();
     cbreak();
@@ -14,4 +52,5 @@ int main()
     getch();
 
     endwin();
+
 }
