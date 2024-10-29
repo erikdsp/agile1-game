@@ -66,7 +66,7 @@ int user_input(std::vector<std::vector<TILE>>& board)
             }
             else
             {
-                std::cout << "Column " << COLUMNS << " is invalid or full." << std::endl;
+                std::cout << "Column " << column_to_drop_tile << " is invalid or full." << std::endl;
             }
         }
         else 
