@@ -1,3 +1,28 @@
+# Ignore files without extension
+*
+!/**/
+!*.*
+
+# Ignore some files and folders
+.DS_Store
+*.dSYM/
+
+# Ignore VS Code config folder
+.vscode/
+
+# Ignore .gitignore
+.gitignore
+
+# Ignore temp folder
+temp/
+
+# Ignore txt and json files
+*.txt
+*.json
+
+Specifications/
+
+# Love
 build/
 CMakeFiles
 CMakeCache.txt
