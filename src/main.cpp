@@ -19,7 +19,7 @@ int main()
 
     WINDOW *window = initscr();
 
-    BoardDisplayUpdater boardUpdater = { board, window, { 2, 1 } };
+    BoardDisplayUpdater boardDisplayUpdater = { board, window, { 2, 1 } };
     boardUpdater.Print();
 
     boardUpdater.UpdateColumn(0);
