@@ -22,7 +22,7 @@ temp/
 
 Specifications/
 
-# Love
+# Ignore files produced by CMake
 build/
 CMakeFiles
 CMakeCache.txt
