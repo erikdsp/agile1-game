@@ -3,7 +3,7 @@
 #include <string>
 #include <curses.h>
 #include "Tile.hpp"
-#include "Board.hpp"
+#include "BoardUpdater.hpp"
 
 class Player {
     std::string name;
