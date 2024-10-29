@@ -3,7 +3,6 @@
 #include <string>
 #include <curses.h>
 #include "Tile.hpp"
-#include "BoardUpdater.hpp"
 
 class Player {
     std::string name;
@@ -17,9 +16,7 @@ int main()
 {
     std::vector<std::vector<TILE>> board (6, std::vector<TILE>(7, TILE::EMPTY));
 
-    getch();
 
-    endwin();
 
     return 0;
 }
