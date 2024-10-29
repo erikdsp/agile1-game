@@ -6,9 +6,9 @@
 
 class TurnHandler
 {
-    TurnHandler(Player players ...);
-
-
+    TurnHandler(Player players[], int playerCount);
+    
+    void TakeTurn();
 private:
     std::vector<Player> m_players;
 
