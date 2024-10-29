@@ -2,12 +2,8 @@
 #include <vector>
 #include <string>
 #include <curses.h>
-
-enum TILE {
-    EMPTY,
-    PLAYER1,
-    PLAYER2
-};
+#include "Tile.hpp"
+#include "Board.hpp"
 
 class Player {
     std::string name;
@@ -19,9 +15,11 @@ void print_board_test(auto b);
 
 int main()
 {
-    std::vector<std::vector<TILE>> board (7, std::vector<TILE>(6, TILE::EMPTY));
+    std::vector<std::vector<TILE>> board (6, std::vector<TILE>(7, TILE::EMPTY));
 
+    getch();
 
+    endwin();
 
     return 0;
 }
