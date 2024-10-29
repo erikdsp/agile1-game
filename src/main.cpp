@@ -4,6 +4,7 @@
 #include <curses.h>
 #include "Tile.hpp"
 #include "BoardDisplayUpdater.hpp"
+#include <sstream>
 
 class Player {
     std::string name;
@@ -19,10 +20,15 @@ int main()
 
     WINDOW *window = initscr();
 
-    BoardDisplayUpdater boardUpdater = { board, window, { 2, 1 } };
-    boardUpdater.Print();
+    BoardDisplayUpdater boardDisplayUpdater = { board, window, { 2, 1 } };
+    boardDisplayUpdater.Print();
 
-    boardUpdater.UpdateColumn(0);
+    boardDisplayUpdater.UpdateColumn(0);
+    std::stringstream stream{  };
+
+    stream << "Hello, " << "World!";
+
+    mvaddstr(10, 0, stream.str().c_str());
 
     getch();
     
