@@ -1,7 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <curses.h>
+#ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
+    #include <ncurses/ncurses.h>
+#else
+    #include <curses.h>
+#endif
+
+const int ROWS = 6;
+const int COLUMNS = 7;
 
 enum TILE {
     EMPTY,
@@ -20,9 +27,6 @@ void print_board_test(auto b);
 int main()
 {
     std::vector<std::vector<TILE>> board (7, std::vector<TILE>(6, TILE::EMPTY));
-
-
-
     return 0;
 }
 
@@ -35,6 +39,20 @@ void print_board_test(auto b)
             std::cout << b[x][y] << " ";
         }
         std::cout << "\n";
+    }
+}
+
+int user_Input(int)
+{
+    int column_to_drop_tile = -1;
+    std::cin >> column_to_drop_tile;
+    if (column_to_drop_tile <= COLUMNS || column_to_drop_tile > 0)
+    {
+        return column_to_drop_tile;
+    }
+    else
+    {
+        std::cout << "You make doo-doo move please make good move!" << std::endl;
     }
 }
 
@@ -52,5 +70,4 @@ void print_ncurses()
     getch();
 
     endwin();
-
 }
