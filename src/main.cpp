@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>  // Include for numeric_limits
 #ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
     #include <ncurses/ncurses.h>
 #else
@@ -42,17 +43,34 @@ void print_board_test(auto b)
     }
 }
 
-int user_Input(int)
+int user_Input(std::vector<std::vector<TILE>>& board)
 {
     int column_to_drop_tile = -1;
-    std::cin >> column_to_drop_tile;
-    if (column_to_drop_tile <= COLUMNS || column_to_drop_tile > 0)
+    while (true)
     {
-        return column_to_drop_tile;
-    }
-    else
-    {
-        std::cout << "You make doo-doo move please make good move!" << std::endl;
+        std::cin >> column_to_drop_tile;
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        if (column_to_drop_tile >= 1 && column_to_drop_tile <= COLUMNS)
+        {
+            if (board[(COLUMNS - 1)][0] == TILE::EMPTY)
+            {
+                std::cout << "Column " << COLUMNS << " is invalid or full." << std::endl;
+                return (COLUMNS - 1);
+            }
+            else
+            {
+                std::cout << "Column " << COLUMNS << " is invalid or full." << std::endl;
+            }
+        }
+        else 
+        {
+            std::cout << "Invalid column! Please enter a number between 1 and " << COLUMNS << ".\n";
+        }
     }
 }
 
