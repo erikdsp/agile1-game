@@ -21,7 +21,7 @@ struct Coord
     int y;
 };
 
-int find_valid_position(int column, std::vector<std::vector<TILE>> &b);
+int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 void print_ncurses();
 void print_board_test(auto b);
@@ -47,7 +47,7 @@ int main()
 }
 
 
-int find_valid_position(int column, std::vector<std::vector<TILE>> &b)
+int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
     int first_free_row = -1;
     for (int i = 5; i >= 0 ; i--)
@@ -66,7 +66,7 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
 {   
     Coord tile_drop;
     tile_drop.x = column;
-    int row = find_valid_position(column, b);
+    int row = find_valid_row_position(column, b);
     tile_drop.y = row;  // if row -1 this will also be saved in tile_crop
     if (row >= 0) b[column][row] = player;  // only update b if valid row
     return tile_drop;       
