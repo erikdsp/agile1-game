@@ -3,7 +3,7 @@
 
 class Player
 {
-
+public:
     int getColor();
     char getSymbol();
 
