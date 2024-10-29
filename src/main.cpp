@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <limits>  // Include for numeric_limits
+#include <limits>  // Include this for std::numeric_limits
 #ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
     #include <ncurses/ncurses.h>
 #else
@@ -21,6 +21,8 @@ class Player {
     std::string name;
     int blasts;    
 };
+
+int user_input(std::vector<std::vector<TILE>>& board);
 
 void print_ncurses();
 void print_board_test(auto b);
@@ -43,7 +45,7 @@ void print_board_test(auto b)
     }
 }
 
-int user_Input(std::vector<std::vector<TILE>>& board)
+int user_input(std::vector<std::vector<TILE>>& board)
 {
     int column_to_drop_tile = -1;
     while (true)
@@ -57,10 +59,10 @@ int user_Input(std::vector<std::vector<TILE>>& board)
         }
         if (column_to_drop_tile >= 1 && column_to_drop_tile <= COLUMNS)
         {
-            if (board[(COLUMNS - 1)][0] == TILE::EMPTY)
+            if (board[(column_to_drop_tile - 1)][0] == TILE::EMPTY)
             {
-                std::cout << "Column " << COLUMNS << " is invalid or full." << std::endl;
-                return (COLUMNS - 1);
+                std::cout << "Column " << column_to_drop_tile << " was picked." << std::endl;
+                return column_to_drop_tile;
             }
             else
             {
