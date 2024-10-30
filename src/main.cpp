@@ -4,6 +4,16 @@
 #include <assert.h>
 #include "Tile.hpp"
 
+#include <limits>  // Include this for std::numeric_limits
+#ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
+    #include <ncurses/ncurses.h>
+#else
+    #include <ncurses.h>
+#endif
+
+const int ROWS = 6;
+const int COLUMNS = 7;
+
 using Board = std::vector<std::vector<TILE>>;
 
 class Player {
@@ -21,6 +31,10 @@ struct Coord
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
 
+int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
+Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
+
+int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
@@ -80,6 +94,37 @@ void print_board(Board &board)
             std::cout << board[x][y] << " ";
         }
         std::cout << "\n";
+    }
+}
+
+int user_input(std::vector<std::vector<TILE>>& board)
+{
+    int column_to_drop_tile = -1;
+    while (true)
+    {
+        std::cin >> column_to_drop_tile;
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        if (column_to_drop_tile >= 1 && column_to_drop_tile <= COLUMNS)
+        {
+            if (board[(column_to_drop_tile - 1)][0] == TILE::EMPTY)
+            {
+                std::cout << "Column " << column_to_drop_tile << " was picked." << std::endl;
+                return column_to_drop_tile;
+            }
+            else
+            {
+                std::cout << "Column " << column_to_drop_tile << " is invalid or full." << std::endl;
+            }
+        }
+        else 
+        {
+            std::cout << "Invalid column! Please enter a number between 1 and " << COLUMNS << ".\n";
+        }
     }
 }
 
