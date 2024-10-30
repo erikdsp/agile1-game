@@ -5,8 +5,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ./build/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ./build/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./build/bin)
 
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
+set(CXX_STANDARD_REQUIRED 23)
 
-add_executable(main src/main.cpp)
-target_link_libraries(main ${CURSES_LIBRARIES})
+file( GLOB_RECURSE FILES src/*.cpp )
+
+add_executable(main ${FILES})
