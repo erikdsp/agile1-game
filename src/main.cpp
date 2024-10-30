@@ -35,9 +35,12 @@ int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
+void take_turn(int &currentPlayer);
+
 int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
+    int currentPlayer = 0;
 
     // adding som tiles for testing
     board[0][5] = PLAYER1;
@@ -52,6 +55,14 @@ int main()
     print_board(board);
 
     return 0;
+}
+
+void take_turn(Board &board, TILE currentPlayer)
+{
+    int input = user_input(board);
+
+    drop_tile_action(input, board, currentPlayer);
+    print_board(board);
 }
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
@@ -144,3 +155,5 @@ char get_player_char_representation(TILE tile)
     }
     return '-';
 }
+
+
