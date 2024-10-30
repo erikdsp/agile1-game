@@ -18,7 +18,7 @@ void print_board(Board &board);
 
 int main()
 {
-    Board board { 6, std::vector<TILE>(7, TILE::EMPTY) };
+    Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
 
     std::stringstream stream{  };
 
@@ -37,11 +37,11 @@ int main()
  */
 void print_board(Board &board)
 {
-    for (int x = 0; x < board.size(); x++)
+    for (int y = 0 ; y < board[0].size() ; y++)
     {
-        for (int y = 0; y < board[y].size(); y++)
+        for (int x = 0 ; x < board.size() ; x++)
         {
-            std::cout << " " << board[x][y] << " ";
+            std::cout << board[x][y] << " ";
         }
         std::cout << "\n";
     }
