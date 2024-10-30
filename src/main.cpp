@@ -63,7 +63,7 @@ void take_turn(TILE currentPlayer, Board &board)
 {
     int input = user_input(board);
 
-    drop_tile_action(input, board, currentPlayer);
+    drop_tile_action(input - 1, board, currentPlayer);
 }
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
