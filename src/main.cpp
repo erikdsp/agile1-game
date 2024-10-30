@@ -19,9 +19,9 @@ class Player {
 
 void print_ncurses();
 void print_board_test(auto b);
-char GetPlayerCharRepresentation(TILE tile);
-void UpdateBoardColumn(Board &board, unsigned int column);
-void PrintBoard(Board &board);
+char get_player_char_representation(TILE tile);
+void update_board_column(Board &board, unsigned int column);
+void print_board(Board &board);
 
 int main()
 {
@@ -33,7 +33,7 @@ int main()
 
     board[0][5] = TILE::PLAYER1;
     board[0][4] = TILE::PLAYER2;
-    PrintBoard(board);
+    print_board(board);
 
     stream << "Hello, " << "World!";
 
@@ -64,25 +64,25 @@ void print_board_test(auto b)
  * This function updates a column to display correct values.
  * @param column The column to be updated
  */
-void UpdateBoardColumn(Board &board, unsigned int column)
+void update_board_column(Board &board, unsigned int column)
 {
     assert(column < board.size());
     for (int y = 0; y < board[column].size(); y++)
     {
-        mvaddch(y * INDV_TILE_H, column * INDV_TILE_W, GetPlayerCharRepresentation(board[column][y]));
+        mvaddch(y * INDV_TILE_H, column * INDV_TILE_W, get_player_char_representation(board[column][y]));
     }
 }
 
 /**
  * Prints or updates the whole board.
  */
-void PrintBoard(Board &board)
+void print_board(Board &board)
 {
     for (int x = 0; x < board.size(); x++)
     {
         for (int y = 0; y < board[x].size(); y++)
         {
-            mvaddch(y * INDV_TILE_H, x * INDV_TILE_W, GetPlayerCharRepresentation(board[x][y]));
+            mvaddch(y * INDV_TILE_H, x * INDV_TILE_W, get_player_char_representation(board[x][y]));
         }
     }
 }
@@ -91,7 +91,7 @@ void PrintBoard(Board &board)
  * @param tile The tile to get representing token
  * @returns The token according to tile
  */
-char GetPlayerCharRepresentation(TILE tile)
+char get_player_char_representation(TILE tile)
 {
     switch (tile)
     {
