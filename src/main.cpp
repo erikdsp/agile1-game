@@ -1,24 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <assert.h>
+#include "Tile.hpp"
+
 #include <limits>  // Include this for std::numeric_limits
 #ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
     #include <ncurses/ncurses.h>
 #else
-    #include <curses.h>
+    #include <ncurses.h>
 #endif
 
 const int ROWS = 6;
 const int COLUMNS = 7;
 
-enum TILE {
-    EMPTY,
-    PLAYER1,
-    PLAYER2
-};
+using Board = std::vector<std::vector<TILE>>;
 
 class Player {
-    public:
+public:
     std::string name;
     int blasts;    
 };
@@ -29,17 +28,16 @@ struct Coord
     int y;
 };
 
+char get_player_char_representation(TILE tile);
+void print_board(Board &board);
+
 int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
-void print_ncurses();
-void print_board_test(auto b);
-
 int main()
 {
-    // game board structure
-    std::vector<std::vector<TILE>> board (7, std::vector<TILE>(6, TILE::EMPTY));
+    Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
 
     // adding som tiles for testing
     board[0][5] = PLAYER1;
@@ -51,11 +49,10 @@ int main()
     drop_tile_action(1, board, PLAYER2);
 
     // printing for test/debug purpose
-    print_board_test(board);
+    print_board(board);
 
     return 0;
 }
-
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
@@ -82,13 +79,16 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
 }
 
 
-void print_board_test(auto b)
+/**
+ * Print the whole board.
+ */
+void print_board(Board &board)
 {
-    for (int y = 0 ; y < b.size() ; y++)
+    for (int y = 0 ; y < board[0].size() ; y++)
     {
-        for (int x = 0 ; x < b[y].size() ; x++)
+        for (int x = 0 ; x < board.size() ; x++)
         {
-            std::cout << b[x][y] << " ";
+            std::cout << board[x][y] << " ";
         }
         std::cout << "\n";
     }
@@ -125,20 +125,22 @@ int user_input(std::vector<std::vector<TILE>>& board)
     }
 }
 
-void print_ncurses()
-{
- /*    
- initscr();
-    cbreak();
-    noecho();
-
-    mvaddch(0, 0, '+');
-    mvaddch(LINES - 1, 0, '-');
-    mvaddstr(10, 30, "press any key to quit");
-    refresh();
-
-    getch();
-
-    endwin();
+/**
+ * @param tile The tile to get representing token
+ * @returns The token according to tile
  */
+char get_player_char_representation(TILE tile)
+{
+    switch (tile)
+    {
+        case TILE::EMPTY:
+            return '-';
+        case TILE::PLAYER1:
+            return 'X';
+        case TILE::PLAYER2:
+            return 'O';
+        default:
+            break;
+    }
+    return '-';
 }
