@@ -46,16 +46,6 @@ void print_board(Board &board)
         }
         std::cout << "\n";
     }
-
-    // for (int y = 0; y < board.size(); y++)
-    // {
-    //     for (int x = 0; x < board[y].size(); x++)
-    //     {
-    //         std::cout << " " << get_player_char_representation(board[y][x]) << " ";
-    //     }
-
-    //     std::cout << '\n';
-    // }
 }
 
 /**
