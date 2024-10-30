@@ -3,8 +3,14 @@
 #include <string>
 #include <curses.h>
 #include "Tile.hpp"
-#include "BoardDisplayUpdater.hpp"
 #include <sstream>
+#include <assert.h>
+
+
+#define INDV_TILE_H 1 // Rows between every row/value in board when printing
+#define INDV_TILE_W 2 // Space between every column/value in board when printing
+
+using Board = std::vector<std::vector<TILE>>;
 
 class Player {
     std::string name;
@@ -13,18 +19,21 @@ class Player {
 
 void print_ncurses();
 void print_board_test(auto b);
+char GetPlayerCharRepresentation(TILE tile);
+void UpdateBoardColumn(Board &board, unsigned int column);
+void PrintBoard(Board &board);
 
 int main()
 {
-    std::vector<std::vector<TILE>> board (7, std::vector<TILE>(6, TILE::EMPTY));
+    Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
 
     WINDOW *window = initscr();
 
-    BoardDisplayUpdater boardDisplayUpdater = { board, window, { 2, 1 } };
-    boardDisplayUpdater.Print();
-
-    boardDisplayUpdater.UpdateColumn(0);
     std::stringstream stream{  };
+
+    board[0][5] = TILE::PLAYER1;
+    board[0][4] = TILE::PLAYER2;
+    PrintBoard(board);
 
     stream << "Hello, " << "World!";
 
@@ -46,6 +55,52 @@ void print_board_test(auto b)
             std::cout << b[x][y] << " ";
         }
         std::cout << "\n";
+    }
+}
+
+/**
+ * This function updates a column to display correct values.
+ * @param column The column to be updated
+ */
+void UpdateBoardColumn(Board &board, unsigned int column)
+{
+    assert(column < board.size());
+    for (int y = 0; y < board[column].size(); y++)
+    {
+        mvaddch(y * INDV_TILE_H, column * INDV_TILE_W, GetPlayerCharRepresentation(board[column][y]));
+    }
+}
+
+/**
+ * Prints or updates the whole board.
+ */
+void PrintBoard(Board &board)
+{
+    for (int x = 0; x < board.size(); x++)
+    {
+        for (int y = 0; y < board[x].size(); y++)
+        {
+            mvaddch(y * INDV_TILE_H, x * INDV_TILE_W, GetPlayerCharRepresentation(board[x][y]));
+        }
+    }
+}
+
+/**
+ * @param tile The tile to get representing token
+ * @returns The token according to tile
+ */
+char GetPlayerCharRepresentation(TILE tile)
+{
+    switch (tile)
+    {
+        case TILE::EMPTY:
+            return '-';
+        case TILE::PLAYER1:
+            return 'X';
+        case TILE::PLAYER2:
+            return 'O';
+        default:
+            break;
     }
 }
 
