@@ -1,36 +1,72 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Tile.hpp"
-#include <sstream>
 #include <assert.h>
+#include "Tile.hpp"
 
 using Board = std::vector<std::vector<TILE>>;
 
 class Player {
+public:
     std::string name;
     int blasts;    
 };
 
+struct Coord
+{
+    int x;
+    int y;
+};
+
 char get_player_char_representation(TILE tile);
-void update_board_column(Board &board, unsigned int column);
 void print_board(Board &board);
+
+int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
+Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
 int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
 
-    std::stringstream stream{  };
+    // adding som tiles for testing
+    board[0][5] = PLAYER1;
+    board[0][4] = PLAYER1;
 
-    // board[1][6] = TILE::PLAYER1;
-    // board[5][4] = TILE::PLAYER2;
-    
-    board[0][1] = TILE::PLAYER1;
+    // call to drop_tile_action for testing
+    drop_tile_action(0, board, PLAYER1);
+    drop_tile_action(1, board, PLAYER2);
+    drop_tile_action(1, board, PLAYER2);
 
+    // printing for test/debug purpose
     print_board(board);
 
     return 0;
 }
+
+int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
+{
+    int first_free_row = -1;
+    for (int i = b[column].size() - 1; i >= 0 ; i--)
+    {
+        if (b[column][i] == EMPTY) 
+        {
+            first_free_row = i;
+            break;
+        }
+    }
+    return first_free_row;  // returns -1 if ther is no available slot
+}
+
+Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player)
+{   
+    Coord tile_drop;
+    tile_drop.x = column;
+    int row = find_valid_row_position(column, b);
+    tile_drop.y = row;  // if row -1 this will also be saved in tile_crop
+    if (row >= 0) b[column][row] = player;  // only update b if valid row
+    return tile_drop;       
+}
+
 
 /**
  * Print the whole board.
