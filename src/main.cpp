@@ -34,6 +34,7 @@ void print_board(Board &board);
 int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
+TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
 
 int main()
 {
@@ -143,4 +144,50 @@ char get_player_char_representation(TILE tile)
             break;
     }
     return '-';
+}
+
+
+// function to check for winner after TILE action
+TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
+{
+    TILE prev{};
+    int count{0};
+    int x{};
+    int y{};
+
+    // check vertical
+    y = played_tile.y;
+    for (int xx = 0 ; xx < b[y].size() ; xx++)
+    {
+        std::cout << xx << " ";
+    }
+    std::cout << "\n";
+    // check horizontal
+    x = played_tile.x;
+    for (int yy = 0 ; yy < b.size() ; yy++)
+    {
+        std::cout << yy << " ";
+    }
+    std::cout << " - y: " << y << "\n";
+    // check diagonal backslash
+    x = played_tile.x;
+    y = played_tile.y;
+
+    // check diagonal slash
+    x = played_tile.x;
+    y = played_tile.y;
+    std::cout << "Diagonal slash:\n";
+    while(y > 0)
+    {
+        x--;
+        y--;   
+        std::cout << "x: " << x << " y: " << y << "\n"; 
+    }
+    if (x > -3)
+    {
+        // continue
+    }
+
+    //
+    return prev;
 }
