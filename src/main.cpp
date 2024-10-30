@@ -18,7 +18,7 @@ class Player {
 };
 
 void print_ncurses();
-void print_board_test(auto b);
+void print_board_test(Board b);
 char get_player_char_representation(TILE tile);
 void update_board_column(Board &board, unsigned int column);
 void print_board(Board &board);
@@ -48,7 +48,7 @@ int main()
     return 0;
 }
 
-void print_board_test(auto b)
+void print_board_test(Board b)
 {
     for (int y = 0 ; y < 6 ; y++)
     {
