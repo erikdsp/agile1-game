@@ -162,19 +162,51 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     int y{};
 
     // check vertical
-    y = played_tile.y;
-    for (int xx = 0 ; xx < rows ; xx++)
-    {
-        std::cout << xx << " ";
-    }
-    std::cout << "\n";
-    // check horizontal
     x = played_tile.x;
-    for (int yy = 0 ; yy < cols ; yy++)
-    {
-        std::cout << yy << " ";
-    }
-    std::cout << " - y: " << y << "\n";
+    prev = EMPTY;
+    count = 0;
+    for (y = 0 ; y < ROWS ; y++)
+        {       
+            if (b[x][y] == 0)
+            {
+                prev = EMPTY;
+                count = 0;
+            }
+            else if (b[x][y] == prev)
+            {
+                count++;
+            }
+            else
+            {
+                prev = b[x][y];
+                count = 1;
+            }
+            if (count == 4) return prev;
+        }
+
+    // check horizontal
+    y = played_tile.y;
+    prev = EMPTY;
+    count = 0;
+    for (x = 0 ; x < COLUMNS ; x++)
+        {       
+            if (b[x][y] == 0)
+            {
+                prev = EMPTY;
+                count = 0;
+            }
+            else if (b[x][y] == prev)
+            {
+                count++;
+            }
+            else
+            {
+                prev = b[x][y];
+                count = 1;
+            }
+            if (count == 4) return prev;
+        }
+
     // check diagonal backslash
     x = played_tile.x;
     y = played_tile.y;
