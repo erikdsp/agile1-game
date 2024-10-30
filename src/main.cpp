@@ -52,6 +52,10 @@ int main()
     // printing for test/debug purpose
     print_board(board);
 
+    // printing for test/debug purpose
+    Coord played_tile{3, 3};
+    has_four_in_row_tile(board, played_tile);
+
     return 0;
 }
 
@@ -150,6 +154,8 @@ char get_player_char_representation(TILE tile)
 // function to check for winner after TILE action
 TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
 {
+    int cols = b.size();                // not using global const COLUMNS because vector is dynamic
+    int rows = b[played_tile.y].size(); // not using global const ROWS because vector is dynamic
     TILE prev{};
     int count{0};
     int x{};
@@ -157,14 +163,14 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
 
     // check vertical
     y = played_tile.y;
-    for (int xx = 0 ; xx < b[y].size() ; xx++)
+    for (int xx = 0 ; xx < rows ; xx++)
     {
         std::cout << xx << " ";
     }
     std::cout << "\n";
     // check horizontal
     x = played_tile.x;
-    for (int yy = 0 ; yy < b.size() ; yy++)
+    for (int yy = 0 ; yy < cols ; yy++)
     {
         std::cout << yy << " ";
     }
@@ -172,22 +178,32 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     // check diagonal backslash
     x = played_tile.x;
     y = played_tile.y;
-
-    // check diagonal slash
-    x = played_tile.x;
-    y = played_tile.y;
-    std::cout << "Diagonal slash:\n";
+    std::cout << "Diagonal backslash:\n";
     while(y > 0)
     {
         x--;
         y--;   
         std::cout << "x: " << x << " y: " << y << "\n"; 
     }
-    if (x > -3)
+    if (x >= -(rows-4) && x < cols - 3)
     {
-        // continue
+        std::cout << "Let's check for a winner like this \\ \n";
     }
 
+    // check diagonal slash
+    x = played_tile.x;
+    y = played_tile.y;
+    std::cout << "Diagonal slash:\n";
+    while(y < rows-1)
+    {
+        x--;
+        y++;   
+        std::cout << "x: " << x << " y: " << y << "\n"; 
+    }
+        if (x >= -(rows-4) && x < cols - 3)
+    {
+        std::cout << "Let's check for a winner like this / \n";
+    }
     //
     return prev;
 }
