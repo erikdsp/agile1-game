@@ -35,7 +35,7 @@ int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
-void take_turn(int &currentPlayer);
+void take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
@@ -52,17 +52,18 @@ int main()
     drop_tile_action(1, board, PLAYER2);
 
     // printing for test/debug purpose
+
+    take_turn(TILE::PLAYER1, board);
     print_board(board);
 
     return 0;
 }
 
-void take_turn(Board &board, TILE currentPlayer)
+void take_turn(TILE currentPlayer, Board &board)
 {
     int input = user_input(board);
 
     drop_tile_action(input, board, currentPlayer);
-    print_board(board);
 }
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
