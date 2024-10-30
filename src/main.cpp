@@ -37,7 +37,9 @@ int main()
 
     stream << "Hello, " << "World!";
 
-    mvaddstr(10, 0, stream.str().c_str());
+    int y, x;
+    y = getmaxy(window);
+    mvaddstr(y - 1, 0, stream.str().c_str());
 
     getch();
     
