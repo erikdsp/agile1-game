@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <curses.h>
 #include "Tile.hpp"
 #include <sstream>
 #include <assert.h>
