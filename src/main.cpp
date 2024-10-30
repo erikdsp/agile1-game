@@ -163,8 +163,12 @@ char get_player_char_representation(TILE tile)
     return '-';
 }
 
-
-// function to check for winner after TILE action
+/* 
+ * function to check for winner after TILE action
+ * @param b - the board to be checked, 
+ * @param played_tile - function only checks rows/columns/diagonals crossing this tile
+ * RETURNS winner if any, else TILE::EMPTY
+ */
 TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
 {
     int cols = b.size();                // not using global const COLUMNS because vector is dynamic
@@ -178,7 +182,7 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     x = played_tile.x;
     prev = EMPTY;
     count = 0;
-    for (y = 0 ; y < ROWS ; y++)
+    for (y = 0 ; y < rows ; y++)
         {       
             if (b[x][y] == 0)
             {
@@ -201,7 +205,7 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     y = played_tile.y;
     prev = EMPTY;
     count = 0;
-    for (x = 0 ; x < COLUMNS ; x++)
+    for (x = 0 ; x < cols ; x++)
         {
             if (b[x][y] == 0)
             {
@@ -223,14 +227,14 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     // check diagonal backslash
     x = played_tile.x;
     y = played_tile.y;
-    std::cout << "Diagonal backslash:\n";
-    while(y > 0)
+    prev = EMPTY;
+    count = 0;
+    while(y > 0)                                  // find x, y starting position
     {
         x--;
         y--;   
-        std::cout << "x: " << x << " y: " << y << "\n"; 
     }
-    if (x >= -(rows-4) && x < cols - 3)
+    if (x >= -(rows-4) && x < cols - 3)           // only check diagonals with four or more tiles
     {
         for ( ; y < rows ; x++, y++)
         {   
@@ -256,14 +260,14 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     // check diagonal slash
     x = played_tile.x;
     y = played_tile.y;
-    std::cout << "Diagonal slash:\n";
-    while(y < rows-1)
+    prev = EMPTY;
+    count = 0;
+    while(y < rows-1)                            // find x, y starting position
     {
         x--;
         y++;   
-        std::cout << "x: " << x << " y: " << y << "\n"; 
     }
-        if (x >= -(rows-4) && x < cols - 3)
+        if (x >= -(rows-4) && x < cols - 3)       // only check diagonals with four or more tiles
     {
         for ( ; y < rows ; x++, y--)
         {   
@@ -285,6 +289,5 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
             if (count == 4) return prev;
         }
     }
-    //
     return TILE::EMPTY;
 }
