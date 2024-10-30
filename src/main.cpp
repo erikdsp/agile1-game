@@ -19,7 +19,6 @@ struct Coord
 };
 
 char get_player_char_representation(TILE tile);
-void update_board_column(Board &board, unsigned int column);
 void print_board(Board &board);
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
