@@ -50,7 +50,7 @@ int main()
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
     int first_free_row = -1;
-    for (int i = 5; i >= 0 ; i--)
+    for (int i = b[column].size(); i >= 0 ; i--)
     {
         if (b[column][i] == EMPTY) 
         {
