@@ -51,13 +51,21 @@ int main()
     drop_tile_action(1, board, PLAYER2);
     drop_tile_action(2, board, PLAYER2);
     drop_tile_action(3, board, PLAYER2);
+    drop_tile_action(2, board, PLAYER2);
+    drop_tile_action(3, board, PLAYER1);
+    drop_tile_action(3, board, PLAYER2);
+    drop_tile_action(4, board, PLAYER1);
+    drop_tile_action(4, board, PLAYER1);
+    drop_tile_action(4, board, PLAYER1);
     drop_tile_action(4, board, PLAYER2);
+
+    // drop_tile_action(0, board, PLAYER2);
 
     // printing for test/debug purpose
     print_board(board);
 
     // printing for test/debug purpose
-    Coord played_tile{4, 5};
+    Coord played_tile{4, 2};
     winner = has_four_in_row_tile(board, played_tile);
 
     std::cout << "The winner is: " << winner << "\n";
@@ -194,7 +202,7 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     prev = EMPTY;
     count = 0;
     for (x = 0 ; x < COLUMNS ; x++)
-        {       
+        {
             if (b[x][y] == 0)
             {
                 prev = EMPTY;
@@ -224,7 +232,25 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
     if (x >= -(rows-4) && x < cols - 3)
     {
-        std::cout << "Let's check for a winner like this \\ \n";
+        for ( ; y < rows ; x++, y++)
+        {   
+            if (x < 0 || x > cols-1) {}           // don't read outside of vector
+            else if (b[x][y] == 0)
+            {
+                prev = EMPTY;
+                count = 0;
+            }
+            else if (b[x][y] == prev)
+            {
+                count++;
+            }
+            else
+            {
+                prev = b[x][y];
+                count = 1;
+            }
+            if (count == 4) return prev;
+        }
     }
 
     // check diagonal slash
@@ -239,8 +265,26 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
         if (x >= -(rows-4) && x < cols - 3)
     {
-        std::cout << "Let's check for a winner like this / \n";
+        for ( ; y < rows ; x++, y--)
+        {   
+            if (x < 0 || x > cols-1) {}           // don't read outside of vector
+            else if (b[x][y] == 0)
+            {
+                prev = EMPTY;
+                count = 0;
+            }
+            else if (b[x][y] == prev)
+            {
+                count++;
+            }
+            else
+            {
+                prev = b[x][y];
+                count = 1;
+            }
+            if (count == 4) return prev;
+        }
     }
     //
-    return prev;
+    return TILE::EMPTY;
 }
