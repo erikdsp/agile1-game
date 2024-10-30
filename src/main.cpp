@@ -50,7 +50,7 @@ int main()
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
     int first_free_row = -1;
-    for (int i = b[column].size(); i >= 0 ; i--)
+    for (int i = b[column].size() - 1; i >= 0 ; i--)
     {
         if (b[column][i] == EMPTY) 
         {
@@ -74,9 +74,9 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
 
 void print_board_test(auto b)
 {
-    for (int y = 0 ; y < 6 ; y++)
+    for (int y = 0 ; y < b.size() ; y++)
     {
-        for (int x = 0 ; x < 7 ; x++)
+        for (int x = 0 ; x < b[y].size() ; x++)
         {
             std::cout << b[x][y] << " ";
         }
