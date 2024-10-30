@@ -88,7 +88,7 @@ void print_board(Board &board)
     {
         for (int x = 0 ; x < board.size() ; x++)
         {
-            std::cout << board[x][y] << " ";
+            std::cout << get_player_char_representation(board[x][y]) << " ";
         }
         std::cout << "\n";
     }
