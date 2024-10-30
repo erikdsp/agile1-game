@@ -39,23 +39,28 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
 int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
+    TILE winner{};
 
     // adding som tiles for testing
     board[0][5] = PLAYER1;
     board[0][4] = PLAYER1;
 
     // call to drop_tile_action for testing
+    // drop_tile_action(0, board, PLAYER1);
     drop_tile_action(0, board, PLAYER1);
     drop_tile_action(1, board, PLAYER2);
-    drop_tile_action(1, board, PLAYER2);
+    drop_tile_action(2, board, PLAYER2);
+    drop_tile_action(3, board, PLAYER2);
+    drop_tile_action(4, board, PLAYER2);
 
     // printing for test/debug purpose
     print_board(board);
 
     // printing for test/debug purpose
-    Coord played_tile{3, 3};
-    has_four_in_row_tile(board, played_tile);
+    Coord played_tile{4, 5};
+    winner = has_four_in_row_tile(board, played_tile);
 
+    std::cout << "The winner is: " << winner << "\n";
     return 0;
 }
 
