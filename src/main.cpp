@@ -46,34 +46,43 @@ struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
-    Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-    Turn currentPlayer = { {-1, -1}, PLAYER1 };
-    TILE winner{};              // there might be a different data structure for this later
+    char playAgain;
+    do
+    {
+        Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
+        Turn currentPlayer = { {-1, -1}, PLAYER1 };
+        TILE winner{};   // there might be a different data structure for this later
 
-    // call to drop_tile_action for testing
-    drop_tile_action(0, board, PLAYER1);
-    drop_tile_action(1, board, PLAYER2);
-    drop_tile_action(2, board, PLAYER2);
-    drop_tile_action(3, board, PLAYER2);
-    drop_tile_action(2, board, PLAYER2);
-    drop_tile_action(3, board, PLAYER1);
-    drop_tile_action(3, board, PLAYER2);
-    drop_tile_action(4, board, PLAYER1);
-    drop_tile_action(4, board, PLAYER1);
-    drop_tile_action(4, board, PLAYER1);
-    drop_tile_action(4, board, PLAYER2);
+        // TEST: call to drop_tile_action for testing
+        drop_tile_action(0, board, TILE::PLAYER1);
+        drop_tile_action(1, board, TILE::PLAYER2);
+        drop_tile_action(2, board, TILE::PLAYER2);
+        drop_tile_action(3, board, TILE::PLAYER2);
+        drop_tile_action(2, board, TILE::PLAYER2);
+        drop_tile_action(3, board, TILE::PLAYER1);
+        drop_tile_action(3, board, TILE::PLAYER2);
+        drop_tile_action(4, board, TILE::PLAYER1);
+        drop_tile_action(4, board, TILE::PLAYER1);
+        drop_tile_action(4, board, TILE::PLAYER1);
+        drop_tile_action(4, board, TILE::PLAYER2);
 
-    // printing for test/debug purpose
+        // printing for test/debug purpose
+        print_board(board);
+        currentPlayer = take_turn(currentPlayer.player, board);
+      
+        Coord played_tile = currentPlayer.coord;
+        winner = has_four_in_row_tile(board, played_tile);
+        std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
+        
+        print_board(board);
+      
+        std::cout << "Do you want to play again? (Yes/No): ";
+        std::cin >> playAgain;
 
-    currentPlayer = take_turn(currentPlayer.player, board);
-    print_board(board);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
+    } while (playAgain == 'y' || playAgain == 'Y');
 
-    // checking and printing for test/debug purpose
-    Coord played_tile{1, 5};
-    winner = has_four_in_row_tile(board, played_tile);
-    std::cout << "The winner is: " << winner << "\n";
-
-
+    std::cout << "Program closing.\n";
     return 0;
 }
 
