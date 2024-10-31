@@ -18,7 +18,7 @@ using Board = std::vector<std::vector<TILE>>;
 
 class Player {
 public:
-    std::string name;
+    std::string name{};
     int blasts;
 };
 
@@ -31,7 +31,8 @@ struct Coord
 struct Turn
 {
     Coord coord;
-    TILE player;
+    TILE player_tile;
+    Player player_stats{};
 };
 
 char get_player_char_representation(TILE tile);
@@ -50,7 +51,7 @@ int main()
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-        Turn currentPlayer = { {-1, -1}, PLAYER1 };
+        Turn currentPlayer = { {-1, -1}, (time(NULL), rand() % 2 == 0 ? PLAYER1 : PLAYER2) };
         TILE winner{ EMPTY };   // there might be a different data structure for this later
 
         do
@@ -62,8 +63,15 @@ int main()
             winner = has_four_in_row_tile(board, currentPlayer.coord);
         } 
         while (winner == EMPTY);
-        
-      
+
+        if (currentPlayer.player_stats.name.size() > 0)
+        {
+            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+        }
+        else 
+        {
+            std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+        }
         
         std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
       
@@ -129,6 +137,13 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
  */
 void print_board(Board &board)
 {
+    for (int i = 0; i < board.size(); i++)
+    {
+        std::cout << i + 1 << " ";
+    }
+
+    std::cout << '\n';
+
     for (int y = 0 ; y < board[0].size() ; y++)
     {
         for (int x = 0 ; x < board.size() ; x++)
@@ -306,7 +321,7 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
         if (x >= -(rows-4) && x < cols - 3)       // only check diagonals with four or more tiles
     {
-        for ( ; y < rows ; x++, y--)
+        for ( ; y >= 0 ; x++, y--)
         {   
             if (x < 0 || x > cols-1) {}           // don't read outside of vector
             else if (b[x][y] == 0)
