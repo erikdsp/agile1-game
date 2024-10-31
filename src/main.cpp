@@ -56,6 +56,15 @@ int main()
 
         do
         {
+            if (currentPlayer.player_stats.name.size() > 0)
+            {
+                std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+            }
+            else 
+            {
+                std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+            }
+            
             print_board(board);
 
             currentPlayer = take_turn(currentPlayer.player, board);
@@ -63,15 +72,6 @@ int main()
             winner = has_four_in_row_tile(board, currentPlayer.coord);
         } 
         while (winner == EMPTY);
-
-        if (currentPlayer.player_stats.name.size() > 0)
-        {
-            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-        }
-        else 
-        {
-            std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-        }
         
         std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
       
