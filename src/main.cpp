@@ -137,6 +137,13 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
  */
 void print_board(Board &board)
 {
+    for (int i = 0; i < board.size(); i++)
+    {
+        std::cout << i + 1 << " ";
+    }
+
+    std::cout << '\n';
+
     for (int y = 0 ; y < board[0].size() ; y++)
     {
         for (int x = 0 ; x < board.size() ; x++)
