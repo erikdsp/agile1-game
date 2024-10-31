@@ -71,8 +71,10 @@ TILE take_turn(TILE currentPlayer, Board &board)
     {
         int input = user_input(board);
 
-        res = drop_tile_action( input - 1, board, currentPlayer );
-        std::cout << "Column is full, please choose another column\n";
+        if ((res = drop_tile_action( input - 1, board, currentPlayer )).y < 0)
+        {
+            std::cout << "Column is full, please choose another column\n";
+        }
     }
     while (res.y < 0);
 
