@@ -28,6 +28,12 @@ struct Coord
     int y;
 };
 
+struct Turn
+{
+    Coord coord;
+    TILE player;
+};
+
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
 
@@ -35,12 +41,12 @@ int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
-TILE take_turn(TILE currentPlayer, Board &board);
+struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-    TILE currentPlayer = PLAYER1;
+    Turn currentPlayer = { {-1, -1}, PLAYER1 };
 
     // adding som tiles for testing
     board[0][5] = PLAYER1;
@@ -53,7 +59,7 @@ int main()
 
     // printing for test/debug purpose
 
-    currentPlayer = take_turn(currentPlayer, board);
+    currentPlayer = take_turn(currentPlayer.player, board);
     print_board(board);
 
     return 0;
@@ -64,7 +70,7 @@ int main()
  * @param Board A reference to the board in which to place a tile
  * @returns Returns which player should place a tile next.
  */
-TILE take_turn(TILE currentPlayer, Board &board)
+struct Turn take_turn(TILE currentPlayer, Board &board)
 {
     Coord res {};
     do
@@ -78,7 +84,7 @@ TILE take_turn(TILE currentPlayer, Board &board)
     }
     while (res.y < 0);
 
-    return currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1;
+    return Turn{ res, currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1 };
 }   
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
