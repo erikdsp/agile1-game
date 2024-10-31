@@ -18,7 +18,7 @@ using Board = std::vector<std::vector<TILE>>;
 
 class Player {
 public:
-    std::string name = "";
+    std::string name{};
     int blasts;
 };
 
