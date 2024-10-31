@@ -314,7 +314,7 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
         if (x >= -(rows-4) && x < cols - 3)       // only check diagonals with four or more tiles
     {
-        for (y = rows - 1; y > 0 ; x++, y--)
+        for ( ; y >= 0 ; x++, y--)
         {   
             if (x < 0 || x > cols-1) {}           // don't read outside of vector
             else if (b[x][y] == 0)
