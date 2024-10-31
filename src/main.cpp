@@ -19,13 +19,19 @@ using Board = std::vector<std::vector<TILE>>;
 class Player {
 public:
     std::string name;
-    int blasts;    
+    int blasts;
 };
 
 struct Coord
 {
     int x;
     int y;
+};
+
+struct Turn
+{
+    Coord coord;
+    TILE player;
 };
 
 char get_player_char_representation(TILE tile);
@@ -36,13 +42,16 @@ int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
 
+struct Turn take_turn(TILE currentPlayer, Board &board);
+
 int main()
 {
     char playAgain;
     do
     {
-        Board board(COLUMNS, std::vector<TILE>(ROWS, TILE::EMPTY));
-        TILE winner{};  // there might be a different data structure for this later
+        Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
+        Turn currentPlayer = { {-1, -1}, PLAYER1 };
+        TILE winner{};   // there might be a different data structure for this later
 
         // TEST: call to drop_tile_action for testing
         drop_tile_action(0, board, TILE::PLAYER1);
@@ -57,14 +66,16 @@ int main()
         drop_tile_action(4, board, TILE::PLAYER1);
         drop_tile_action(4, board, TILE::PLAYER2);
 
-        // TEST: printing for test/debug purpose
+        // printing for test/debug purpose
         print_board(board);
-
-        // TEST: checking and printing for test/debug purpose
-        Coord played_tile{1, 5};
+        currentPlayer = take_turn(currentPlayer.player, board);
+      
+        Coord played_tile = currentPlayer.coord;
         winner = has_four_in_row_tile(board, played_tile);
         std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
-
+        
+        print_board(board);
+      
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
 
@@ -74,6 +85,28 @@ int main()
     std::cout << "Program closing.\n";
     return 0;
 }
+
+/**
+ * @param currentPlayer Which players currently playing
+ * @param Board A reference to the board in which to place a tile
+ * @returns Returns which player should place a tile next.
+ */
+struct Turn take_turn(TILE currentPlayer, Board &board)
+{
+    Coord res {};
+    do
+    {
+        int input = user_input(board);
+
+        if ((res = drop_tile_action( input - 1, board, currentPlayer )).y < 0)
+        {
+            std::cout << "Column is full, please choose another column\n";
+        }
+    }
+    while (res.y < 0);
+
+    return Turn{ res, currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1 };
+}   
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
@@ -96,7 +129,7 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
     int row = find_valid_row_position(column, b);
     tile_drop.y = row;  // if row -1 this will also be saved in tile_crop
     if (row >= 0) b[column][row] = player;  // only update b if valid row
-    return tile_drop;       
+    return tile_drop;
 }
 
 
