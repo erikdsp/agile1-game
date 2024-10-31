@@ -67,7 +67,7 @@ int main()
             
             print_board(board);
 
-            currentPlayer = take_turn(currentPlayer.player, board);
+            currentPlayer = take_turn(currentPlayer.player_tile, board);
 
             winner = has_four_in_row_tile(board, currentPlayer.coord);
         } 
