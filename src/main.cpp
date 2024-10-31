@@ -18,7 +18,7 @@ using Board = std::vector<std::vector<TILE>>;
 
 class Player {
 public:
-    std::string name;
+    std::string name{};
     int blasts;
 };
 
@@ -31,7 +31,8 @@ struct Coord
 struct Turn
 {
     Coord coord;
-    TILE player;
+    TILE player_tile;
+    Player player_stats{};
 };
 
 char get_player_char_representation(TILE tile);
@@ -50,8 +51,17 @@ int main()
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-        Turn currentPlayer = { {-1, -1}, PLAYER1 };
+        Turn currentPlayer = { {-1, -1}, (time(NULL), rand() % 2 == 0 ? PLAYER1 : PLAYER2) };
         TILE winner{};   // there might be a different data structure for this later
+
+        if (currentPlayer.player_stats.name.size() > 0)
+        {
+            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+        }
+        else 
+        {
+            std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
+        }
 
         // TEST: call to drop_tile_action for testing
         drop_tile_action(0, board, TILE::PLAYER1);
@@ -67,7 +77,7 @@ int main()
 
         // printing for test/debug purpose
         print_board(board);
-        currentPlayer = take_turn(currentPlayer.player, board);
+        currentPlayer = take_turn(currentPlayer.player_tile, board);
       
         Coord played_tile = currentPlayer.coord;
         winner = has_four_in_row_tile(board, played_tile);
