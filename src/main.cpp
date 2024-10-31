@@ -167,8 +167,16 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
 {
     int cols = b.size();                // not using global const COLUMNS because vector is dynamic
     int rows = b[played_tile.y].size(); // not using global const ROWS because vector is dynamic
-    if (played_tile.x >= cols || played_tile.x < 0) return TILE::EMPTY;  // bad call - should throw exception
-    if (played_tile.y >= rows || played_tile.y < 0) return TILE::EMPTY;  // bad call - should throw exception
+    if (played_tile.x >= cols || played_tile.x < 0) 
+    {
+        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
+        return TILE::EMPTY;  // bad call - should throw exception
+    }
+    if (played_tile.y >= rows || played_tile.y < 0) 
+    {
+        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
+        return TILE::EMPTY;  // bad call - should throw exception
+    }
     TILE prev{};
     int count{0};
     int x{};
