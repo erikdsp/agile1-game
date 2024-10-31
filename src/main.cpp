@@ -73,6 +73,8 @@ int main()
         } 
         while (winner == EMPTY);
         
+        print_board(board);
+
         std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
       
         std::cout << "Do you want to play again? (Yes/No): ";
