@@ -107,6 +107,10 @@ struct Turn take_turn(TILE currentPlayer, Board &board)
     return Turn{ res, currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1 };
 }   
 
+/*
+ * Helper function for drop_tile_action() 
+ * @Param column - selected column, @Param b - board
+ */
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
     int first_free_row = -1;
@@ -121,6 +125,13 @@ int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
     return first_free_row;  // returns -1 if ther is no available slot
 }
 
+/* 
+ * Function to find next free slot in selected column
+ * @Param column - selected column
+ * @Param b - board
+ * @Param player - current player
+ * returns Coord with played position - If slot is full Coord.y = -1
+ */
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player)
 {   
     Coord tile_drop;
