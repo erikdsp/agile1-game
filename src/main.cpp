@@ -19,7 +19,7 @@ using Board = std::vector<std::vector<TILE>>;
 class Player {
 public:
     std::string name;
-    int blasts;    
+    int blasts;
 };
 
 struct Coord
@@ -35,12 +35,12 @@ int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
 
-void take_turn(TILE currentPlayer, Board &board);
+TILE take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-    int currentPlayer = 0;
+    TILE currentPlayer = PLAYER1;
 
     // adding som tiles for testing
     board[0][5] = PLAYER1;
@@ -53,18 +53,31 @@ int main()
 
     // printing for test/debug purpose
 
-    take_turn(TILE::PLAYER1, board);
+    currentPlayer = take_turn(currentPlayer, board);
     print_board(board);
 
     return 0;
 }
 
-void take_turn(TILE currentPlayer, Board &board)
+/**
+ * @param currentPlayer Which players currently playing
+ * @param Board A reference to the board in which to place a tile
+ * @returns Returns which player should place a tile next.
+ */
+TILE take_turn(TILE currentPlayer, Board &board)
 {
-    int input = user_input(board);
+    Coord res {};
+    do
+    {
+        int input = user_input(board);
 
-    drop_tile_action(input - 1, board, currentPlayer);
-}
+        res = drop_tile_action( input - 1, board, currentPlayer );
+        std::cout << "Column is full, please choose another column\n";
+    }
+    while (res.y < 0);
+
+    return currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1;
+}   
 
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
 {
@@ -87,7 +100,7 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
     int row = find_valid_row_position(column, b);
     tile_drop.y = row;  // if row -1 this will also be saved in tile_crop
     if (row >= 0) b[column][row] = player;  // only update b if valid row
-    return tile_drop;       
+    return tile_drop;
 }
 
 
