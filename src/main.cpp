@@ -47,13 +47,12 @@ struct Turn take_turn(TILE currentPlayer, Board &board);
 int main()
 {   
     char playAgain;
+    srand(time(NULL)); // Needed for line 54 (rand) to not always result in player 2 starting
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-        srand(time(NULL)); // Needed for below line to not always result in player 2 starting
         Turn currentPlayer = { {-1, -1}, (time(NULL), rand() % 2 == 0 ? PLAYER1 : PLAYER2) };
         TILE winner{ EMPTY };   // there might be a different data structure for this later
-
         do
         {
             if (currentPlayer.player_stats.name.size() > 0)
