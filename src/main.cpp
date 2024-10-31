@@ -45,36 +45,27 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
 struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
-{
+{   
     char playAgain;
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
         Turn currentPlayer = { {-1, -1}, PLAYER1 };
-        TILE winner{};   // there might be a different data structure for this later
+        TILE winner{ EMPTY };   // there might be a different data structure for this later
 
-        // TEST: call to drop_tile_action for testing
-        drop_tile_action(0, board, TILE::PLAYER1);
-        drop_tile_action(1, board, TILE::PLAYER2);
-        drop_tile_action(2, board, TILE::PLAYER2);
-        drop_tile_action(3, board, TILE::PLAYER2);
-        drop_tile_action(2, board, TILE::PLAYER2);
-        drop_tile_action(3, board, TILE::PLAYER1);
-        drop_tile_action(3, board, TILE::PLAYER2);
-        drop_tile_action(4, board, TILE::PLAYER1);
-        drop_tile_action(4, board, TILE::PLAYER1);
-        drop_tile_action(4, board, TILE::PLAYER1);
-        drop_tile_action(4, board, TILE::PLAYER2);
+        do
+        {
+            print_board(board);
 
-        // printing for test/debug purpose
-        print_board(board);
-        currentPlayer = take_turn(currentPlayer.player, board);
-      
-        Coord played_tile = currentPlayer.coord;
-        winner = has_four_in_row_tile(board, played_tile);
-        std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
+            currentPlayer = take_turn(currentPlayer.player, board);
+
+            winner = has_four_in_row_tile(board, currentPlayer.coord);
+        } 
+        while (winner == EMPTY);
         
-        print_board(board);
+      
+        
+        std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
       
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
