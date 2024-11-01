@@ -39,7 +39,7 @@ int user_input(Board &board);
 bool is_board_full(Board &board);
 int find_valid_row_position(int column, Board &b);
 void ask_for_player_names(Player &player1, Player &player2);
-void display_winner(int winner, Player &player1, Player &player2);
+void display_winner(TILE winner, Player &player1, Player &player2);
 void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
