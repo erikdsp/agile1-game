@@ -50,14 +50,17 @@ struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
-    Player player1, player2;
-    ask_for_player_names(player1, player2);
+    Turn player1, player2;
+    player1.player_tile = PLAYER1;
+    player2.player_tile = PLAYER2;
+    
+    ask_for_player_names(player1.player_stats, player2.player_stats);
     char playAgain;
     srand(time(NULL)); // Needed for line 54 (rand) to not always result in player 2 starting
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-        Turn currentPlayer = { {-1, -1}, (time(NULL), rand() % 2 == 0 ? PLAYER1 : PLAYER2) };
+        Turn &currentPlayer = rand() % 2 ? player2 : player1;
         TILE winner{ EMPTY };   // there might be a different data structure for this later
         do
         {
@@ -81,7 +84,7 @@ int main()
         print_board(board);
 
         // Call the function to determine the winner and assign to winner
-        display_winner(winner, player1, player2);
+        display_winner(winner, player1.player_stats, player2.player_stats);
       
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
