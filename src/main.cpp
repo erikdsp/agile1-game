@@ -3,7 +3,6 @@
 #include <string>
 #include <assert.h>
 #include "Tile.hpp"
-
 #include <limits>  // Include this for std::numeric_limits
 #ifdef _WIN32 // Windows -> Compile with g++ -std=c++20 .\main.cpp -o .\main -lncursesw
     #include <ncurses/ncurses.h>
@@ -41,11 +40,11 @@ void ask_for_player_names(Player &player1, Player &player2);
 
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
-
-int user_input(std::vector<std::vector<TILE>>& board);
-int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
-Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
-TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
+int user_input(Board &board);
+bool is_board_full(Board &board);
+int find_valid_row_position(int column, Board &b);
+Coord drop_tile_action(int column, Board &b, TILE player);
+TILE has_four_in_row_tile(Board &b, Coord played_tile);
 
 struct Turn take_turn(TILE currentPlayer, Board &board);
 
@@ -54,13 +53,12 @@ int main()
     Player player1, player2;
     ask_for_player_names(player1, player2);
     char playAgain;
-  
+    srand(time(NULL)); // Needed for line 54 (rand) to not always result in player 2 starting
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
         Turn currentPlayer = { {-1, -1}, (time(NULL), rand() % 2 == 0 ? PLAYER1 : PLAYER2) };
         TILE winner{ EMPTY };   // there might be a different data structure for this later
-
         do
         {
             if (currentPlayer.player_stats.name.size() > 0)
@@ -78,7 +76,7 @@ int main()
 
             winner = has_four_in_row_tile(board, currentPlayer.coord);
         } 
-        while (winner == EMPTY);
+        while (winner == TILE::EMPTY && (is_board_full(board) == false));
         
         print_board(board);
 
@@ -89,7 +87,7 @@ int main()
         std::cin >> playAgain;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
     } while (playAgain == 'y' || playAgain == 'Y');
-
+    
     std::cout << "Program closing.\n";
     return 0;
 }
@@ -120,7 +118,7 @@ struct Turn take_turn(TILE currentPlayer, Board &board)
  * Helper function for drop_tile_action() 
  * @Param column - selected column, @Param b - board
  */
-int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
+int find_valid_row_position(int column, Board &b)
 {
     int first_free_row = -1;
     for (int i = b[column].size() - 1; i >= 0 ; i--)
@@ -141,7 +139,7 @@ int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b)
  * @Param player - current player
  * returns Coord with played position - If slot is full Coord.y = -1
  */
-Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player)
+Coord drop_tile_action(int column, Board &b, TILE player)
 {   
     Coord tile_drop;
     tile_drop.x = column;
@@ -174,7 +172,7 @@ void print_board(Board &board)
     }
 }
 
-int user_input(std::vector<std::vector<TILE>>& board)
+int user_input(Board &board)
 {
     int column_to_drop_tile = -1;
     while (true)
@@ -253,7 +251,7 @@ void display_winner(TILE winner, Player &player1, Player &player2){
  * @param played_tile - function only checks rows/columns/diagonals crossing this tile
  * RETURNS winner if any, else TILE::EMPTY
  */
-TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
+TILE has_four_in_row_tile(Board &b, Coord played_tile)
 {
     int cols = b.size();                // not using global const COLUMNS because vector is dynamic
     int rows = b[played_tile.y].size(); // not using global const ROWS because vector is dynamic
@@ -384,4 +382,19 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
         }
     }
     return TILE::EMPTY;
+}
+
+bool is_board_full(Board &board)
+{
+    for (const std::vector<TILE> &column : board)
+    {
+        for (TILE tile : column)
+        {
+            if (tile == TILE::EMPTY)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
