@@ -44,7 +44,8 @@ void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
-struct Turn take_turn(TILE currentPlayer, Board &board);
+
+struct Coord take_turn(TILE currentPlayer, Board &board);
 
 int main()
 {
@@ -58,24 +59,19 @@ int main()
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
-        Turn &currentPlayer = rand() % 2 ? player2 : player1;
+        Turn currentPlayer = rand() % 2 ? player2 : player1;
         TILE winner{ EMPTY };   // there might be a different data structure for this later
         do
         {
-            if (currentPlayer.player_stats.name.size() > 0)
-            {
-                std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-            }
-            else 
-            {
-                std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-            }
+            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
             
             print_board(board);
 
-            currentPlayer = take_turn(currentPlayer.player_tile, board);
+            currentPlayer.coord = take_turn(currentPlayer.player_tile, board);
 
             winner = has_four_in_row_tile(board, currentPlayer.coord);
+
+            currentPlayer = currentPlayer.player_tile == PLAYER1 ? player2 : player1;
         } 
         while (winner == TILE::EMPTY && (is_board_full(board) == false));
         
@@ -98,7 +94,7 @@ int main()
  * @param Board A reference to the board in which to place a tile
  * @returns Returns which player should place a tile next.
  */
-struct Turn take_turn(TILE currentPlayer, Board &board)
+struct Coord take_turn(TILE currentPlayer, Board &board)
 {
     Coord res {};
     do
@@ -112,7 +108,7 @@ struct Turn take_turn(TILE currentPlayer, Board &board)
     }
     while (res.y < 0);
 
-    return Turn{ res, currentPlayer == PLAYER1 ? PLAYER2 : PLAYER1 };
+    return res;
 }   
 
 /*
