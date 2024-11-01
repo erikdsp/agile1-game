@@ -29,7 +29,7 @@ struct Coord
 };
 
 void ask_for_player_names(Player &player1, Player &player2);
-void display_winner(int winner, Player &player1, Player &player2);
+
 
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
@@ -56,8 +56,7 @@ int main()
 
     // printing for test/debug purpose
     print_board(board);
-    // Call the function to determine the winner and assign to winner
-    display_winner(winner, player1, player2);
+    
 
     return 0;
 }
@@ -157,17 +156,4 @@ void ask_for_player_names(Player &player1, Player &player2){
     std::cin >> player1.name;
     std::cout << "Enter name for Player 2: ";
     std::cin >> player2.name;
-}
-void display_winner(int winner, Player &player1, Player &player2){
-    if (winner == 1)
-    {
-        std::cout << player1.name << " wins! " << std::endl;
-    }
-    else if (winner == 2)
-    {
-        std::cout << player2.name << " wins! " << std::endl;
-    }
-    else {
-        return;
-    }
 }
