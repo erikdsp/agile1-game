@@ -111,9 +111,9 @@ struct Coord take_turn(TILE currentPlayer, Board &board)
     return res;
 }   
 
-/*
+/**
  * Helper function for drop_tile_action() 
- * @Param column - selected column, @Param b - board
+ * @param column - selected column, @Param b - board
  */
 int find_valid_row_position(int column, Board &b)
 {
@@ -134,7 +134,7 @@ int find_valid_row_position(int column, Board &b)
  * @param column - selected column
  * @param b - board
  * @param player - current player
- * returns Coord with played position - If slot is full Coord.y = -1
+ * @returns Coord with played position - If slot is full Coord.y = -1
  */
 Coord drop_tile_action(int column, Board &b, TILE player)
 {   
@@ -241,11 +241,11 @@ void display_winner(TILE winner, Player &player1, Player &player2){
     }
 }
 
-/* 
+/** 
  * function to check for winner after TILE action
  * @param b - the board to be checked, 
  * @param played_tile - function only checks rows/columns/diagonals crossing this tile
- * RETURNS winner if any, else TILE::EMPTY
+ * @returns winner if any, else TILE::EMPTY
  */
 TILE has_four_in_row_tile(Board &b, Coord played_tile)
 {
