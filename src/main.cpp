@@ -36,6 +36,9 @@ struct Turn
     Player player_stats{};
 };
 
+void ask_for_player_names(Player &player1, Player &player2);
+
+
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
 
@@ -47,8 +50,11 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile);
 struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
-{   
+{
+    Player player1, player2;
+    ask_for_player_names(player1, player2);
     char playAgain;
+  
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
@@ -76,8 +82,8 @@ int main()
         
         print_board(board);
 
-       // Call the function to determine the winner and assign to winner
-       display_winner(winner, player1, player2);
+        // Call the function to determine the winner and assign to winner
+        display_winner(winner, player1, player2);
       
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
@@ -217,6 +223,13 @@ char get_player_char_representation(TILE tile)
             break;
     }
     return '-';
+}
+
+void ask_for_player_names(Player &player1, Player &player2){
+    std::cout << "Enter name for Player 1: ";
+    std::cin >> player1.name;
+    std::cout << "Enter name for Player 2: ";
+    std::cin >> player2.name;
 }
 
 void display_winner(TILE winner, Player &player1, Player &player2){
@@ -372,4 +385,3 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
     return TILE::EMPTY;
 }
-
