@@ -64,14 +64,7 @@ int main()
         TILE winner{ EMPTY };   // there might be a different data structure for this later
         do
         {
-            if (currentPlayer.player_stats.name.size() > 0)
-            {
-                std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-            }
-            else 
-            {
-                std::cout << "Player " << currentPlayer.player_tile << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-            }
+            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
             
             print_board(board);
 
