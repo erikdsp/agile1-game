@@ -26,7 +26,7 @@ struct Coord
     int x;
     int y;
 };
-void display_winner(int winner, Player &player1, Player &player2);
+void display_winner(TILE winner, Player &player1, Player &player2);
 
 struct Turn
 {
