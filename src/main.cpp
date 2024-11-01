@@ -27,6 +27,7 @@ struct Coord
     int x;
     int y;
 };
+void display_winner(int winner, Player &player1, Player &player2);
 
 struct Turn
 {
@@ -75,11 +76,11 @@ int main()
         
         print_board(board);
 
-        std::cout << "The winner is: " << get_player_char_representation(winner) << "\n";
+       // Call the function to determine the winner and assign to winner
+       display_winner(winner, player1, player2);
       
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
-
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
     } while (playAgain == 'y' || playAgain == 'Y');
 
@@ -217,6 +218,21 @@ char get_player_char_representation(TILE tile)
     }
     return '-';
 }
+
+void display_winner(TILE winner, Player &player1, Player &player2){
+    if (winner == PLAYER1)
+    {
+        std::cout << player1.name << " wins! " << std::endl;
+    }
+    else if (winner == PLAYER2)
+    {
+        std::cout << player2.name << " wins! " << std::endl;
+    }
+    else {
+        return;
+    }
+}
+
 
 /* 
  * function to check for winner after TILE action
@@ -356,3 +372,4 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
     }
     return TILE::EMPTY;
 }
+
