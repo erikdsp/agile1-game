@@ -29,8 +29,8 @@ struct Coord
 };
 
 char get_player_char_representation(TILE tile);
+void print_gameboard(Board &board);
 void print_board(Board &board);
-
 int user_input(std::vector<std::vector<TILE>>& board);
 int find_valid_row_position(int column, std::vector<std::vector<TILE>> &b);
 Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE player);
@@ -40,7 +40,6 @@ int main()
 {
     Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
     TILE winner{};              // there might be a different data structure for this later
-
     // call to drop_tile_action for testing
     drop_tile_action(0, board, PLAYER1);
     drop_tile_action(1, board, PLAYER2);
@@ -53,6 +52,7 @@ int main()
     drop_tile_action(4, board, PLAYER1);
     drop_tile_action(4, board, PLAYER1);
     drop_tile_action(4, board, PLAYER2);
+    print_gameboard(board);
 
     // printing for test/debug purpose
     print_board(board);
@@ -89,7 +89,6 @@ Coord drop_tile_action(int column, std::vector<std::vector<TILE>> &b, TILE playe
     if (row >= 0) b[column][row] = player;  // only update b if valid row
     return tile_drop;       
 }
-
 
 /**
  * Print the whole board.
@@ -294,4 +293,51 @@ TILE has_four_in_row_tile(std::vector<std::vector<TILE>> &b, Coord played_tile)
         }
     }
     return TILE::EMPTY;
+}
+
+void print_gameboard(Board &board)
+{
+    // Print the current board into the new frame
+    int y {};
+    int x {};
+    int row = 10;
+    int column = 11;
+    // Position of new row
+    int row_position = row - 8;
+    int column_position = column - 9;
+    std::vector<std::vector<int>> new_board(row, std::vector<int>(column));
+        
+        
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[0].size(); j++)
+            {
+                new_board[row_position + j][column_position + i] = get_player_char_representation(board[i][j]);
+            }
+        }
+
+        for (x = 0; x < row; x++)
+        {
+            for (y = 0; y < column; y++)
+            {
+                // frame of new vector
+                if (x == 0 || x == row - 1 || y == 0 || y == column - 1) 
+                {
+                    std::cout << " * ";
+                }
+                else if (new_board[x][y] == 0)
+                {
+                    std::cout << " | ";
+                }
+                else if (new_board[x][y] != 0)
+                {
+                    std::cout << new_board[x][y] << " ";
+                } 
+                else 
+                {
+                    std::cout << " ";
+                }
+            }
+            std::cout << std::endl;
+        }
 }
