@@ -219,12 +219,12 @@ char get_player_char_representation(TILE tile)
     return '-';
 }
 
-void display_winner(int winner, Player &player1, Player &player2){
-    if (winner == 1)
+void display_winner(TILE winner, Player &player1, Player &player2){
+    if (winner == PLAYER1)
     {
         std::cout << player1.name << " wins! " << std::endl;
     }
-    else if (winner == 2)
+    else if (winner == PLAYER2)
     {
         std::cout << player2.name << " wins! " << std::endl;
     }
