@@ -26,7 +26,6 @@ struct Coord
     int x;
     int y;
 };
-void display_winner(TILE winner, Player &player1, Player &player2);
 
 struct Turn
 {
@@ -35,14 +34,14 @@ struct Turn
     Player player_stats{};
 };
 
-void ask_for_player_names(Player &player1, Player &player2);
-
-
 char get_player_char_representation(TILE tile);
-void print_board(Board &board);
 int user_input(Board &board);
 bool is_board_full(Board &board);
 int find_valid_row_position(int column, Board &b);
+void ask_for_player_names(Player &player1, Player &player2);
+void display_winner(int winner, Player &player1, Player &player2);
+void print_board(Board &board);
+
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
 
@@ -56,7 +55,7 @@ int main()
     
     ask_for_player_names(player1.player_stats, player2.player_stats);
     char playAgain;
-    srand(time(NULL)); // Needed for line 54 (rand) to not always result in player 2 starting
+    srand(time(NULL)); // Needed for rand to not always result in player 2 starting
     do
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
@@ -130,11 +129,11 @@ int find_valid_row_position(int column, Board &b)
     return first_free_row;  // returns -1 if ther is no available slot
 }
 
-/* 
+/**
  * Function to find next free slot in selected column
- * @Param column - selected column
- * @Param b - board
- * @Param player - current player
+ * @param column - selected column
+ * @param b - board
+ * @param player - current player
  * returns Coord with played position - If slot is full Coord.y = -1
  */
 Coord drop_tile_action(int column, Board &b, TILE player)
@@ -146,7 +145,6 @@ Coord drop_tile_action(int column, Board &b, TILE player)
     if (row >= 0) b[column][row] = player;  // only update b if valid row
     return tile_drop;
 }
-
 
 /**
  * Print the whole board.
@@ -237,11 +235,11 @@ void display_winner(TILE winner, Player &player1, Player &player2){
     {
         std::cout << player2.name << " wins! " << std::endl;
     }
-    else {
+    else
+    {
         return;
     }
 }
-
 
 /* 
  * function to check for winner after TILE action
