@@ -26,6 +26,7 @@ struct Coord
     int x;
     int y;
 };
+void display_winner(int winner, Player &player1, Player &player2);
 
 struct Turn
 {
@@ -33,6 +34,9 @@ struct Turn
     TILE player_tile;
     Player player_stats{};
 };
+
+void ask_for_player_names(Player &player1, Player &player2);
+
 
 char get_player_char_representation(TILE tile);
 void print_board(Board &board);
@@ -45,7 +49,9 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile);
 struct Turn take_turn(TILE currentPlayer, Board &board);
 
 int main()
-{   
+{
+    Player player1, player2;
+    ask_for_player_names(player1, player2);
     char playAgain;
     srand(time(NULL)); // Needed for line 54 (rand) to not always result in player 2 starting
     do
@@ -74,11 +80,11 @@ int main()
         
         print_board(board);
 
-        std::cout << "The winner is: " << get_player_char_representation(winner) << "\n"; //This assumes there is a winner every game
+        // Call the function to determine the winner and assign to winner
+        display_winner(winner, player1, player2);
       
         std::cout << "Do you want to play again? (Yes/No): ";
         std::cin >> playAgain;
-
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
     } while (playAgain == 'y' || playAgain == 'Y');
     
@@ -216,6 +222,28 @@ char get_player_char_representation(TILE tile)
     }
     return '-';
 }
+
+void ask_for_player_names(Player &player1, Player &player2){
+    std::cout << "Enter name for Player 1: ";
+    std::cin >> player1.name;
+    std::cout << "Enter name for Player 2: ";
+    std::cin >> player2.name;
+}
+
+void display_winner(TILE winner, Player &player1, Player &player2){
+    if (winner == PLAYER1)
+    {
+        std::cout << player1.name << " wins! " << std::endl;
+    }
+    else if (winner == PLAYER2)
+    {
+        std::cout << player2.name << " wins! " << std::endl;
+    }
+    else {
+        return;
+    }
+}
+
 
 /* 
  * function to check for winner after TILE action
