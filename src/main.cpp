@@ -44,7 +44,7 @@ void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
-void reset_tile_count(int &c, TILE&p);
+void reset_tile_count(int &count, TILE&p);
 void count_tiles(Board &b, int x, int y, int &count, TILE &prev);
 void print_error_message(std::string_view str);
 
@@ -325,12 +325,23 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     return TILE::EMPTY;
 }
 
-void reset_tile_count(int &c, TILE&p)
+/**
+ * Helper function to reset counter
+ * @param count, 
+ * @param p previous tile, empty will start a new count 
+ */
+void reset_tile_count(int &count, TILE&p)
 {
     p = EMPTY;
-    c = 0;
+    count = 0;
 }
 
+/** Helper function to count tiles
+ * @param b Board to be checked
+ * @param x, y Coordinates
+ * @param count current count
+ * @param prev previous tile 
+ */
 void count_tiles(Board &b, int x, int y, int &count, TILE &prev)
 {
      int cols = b.size();
