@@ -44,6 +44,9 @@ void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
+void reset_tile_count(int &count, TILE&p);
+void count_tiles(Board &b, int x, int y, int &count, TILE &prev);
+void print_error_message(std::string_view str);
 
 struct Coord take_turn(TILE currentPlayer, Board &board);
 
@@ -253,13 +256,13 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     int rows = b[played_tile.y].size(); // not using global const ROWS because vector is dynamic
     if (played_tile.x >= cols || played_tile.x < 0) 
     {
-        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
-        return TILE::EMPTY;  // bad call - should throw exception
+        print_error_message("Bad call to has_four_in_row_tile()\n");    // crude error handling
+        return TILE::EMPTY;                                             // bad call - should throw exception
     }
     if (played_tile.y >= rows || played_tile.y < 0) 
     {
-        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
-        return TILE::EMPTY;  // bad call - should throw exception
+        print_error_message("Bad call to has_four_in_row_tile()\n");    // crude error handling
+        return TILE::EMPTY;                                             // bad call - should throw exception
     }
     TILE prev{};
     int count{0};
@@ -268,55 +271,26 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
 
     // check vertical
     x = played_tile.x;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     for (y = 0 ; y < rows ; y++)
-        {       
-            if (b[x][y] == 0)
-            {
-                prev = EMPTY;
-                count = 0;
-            }
-            else if (b[x][y] == prev)
-            {
-                count++;
-            }
-            else
-            {
-                prev = b[x][y];
-                count = 1;
-            }
+        {     
+            count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
             if (count == 4) return prev;
         }
 
     // check horizontal
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     for (x = 0 ; x < cols ; x++)
         {
-            if (b[x][y] == 0)
-            {
-                prev = EMPTY;
-                count = 0;
-            }
-            else if (b[x][y] == prev)
-            {
-                count++;
-            }
-            else
-            {
-                prev = b[x][y];
-                count = 1;
-            }
+            count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
             if (count == 4) return prev;
         }
 
     // check diagonal backslash
     x = played_tile.x;
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);                // count and prev passed by reference
     while(y > 0)                                  // find x, y starting position
     {
         x--;
@@ -326,21 +300,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     {
         for ( ; y < rows ; x++, y++)
         {   
-            if (x < 0 || x > cols-1) {}           // don't read outside of vector
-            else if (b[x][y] == 0)
-            {
-                prev = EMPTY;
-                count = 0;
-            }
-            else if (b[x][y] == prev)
-            {
-                count++;
-            }
-            else
-            {
-                prev = b[x][y];
-                count = 1;
-            }
+            count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
             if (count == 4) return prev;
         }
     }
@@ -348,8 +308,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     // check diagonal slash
     x = played_tile.x;
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     while(y < rows-1)                            // find x, y starting position
     {
         x--;
@@ -359,7 +318,34 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     {
         for ( ; y >= 0 ; x++, y--)
         {   
-            if (x < 0 || x > cols-1) {}           // don't read outside of vector
+            count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
+            if (count == 4) return prev;
+        }
+    }
+    return TILE::EMPTY;
+}
+
+/**
+ * Helper function to reset counter
+ * @param count, 
+ * @param p previous tile, empty will start a new count 
+ */
+void reset_tile_count(int &count, TILE&p)
+{
+    p = EMPTY;
+    count = 0;
+}
+
+/** Helper function to count tiles
+ * @param b Board to be checked
+ * @param x, y Coordinates
+ * @param count current count
+ * @param prev previous tile 
+ */
+void count_tiles(Board &b, int x, int y, int &count, TILE &prev)
+{
+     int cols = b.size();
+     if (x < 0 || x > cols-1) {}           // don't read outside of vector
             else if (b[x][y] == 0)
             {
                 prev = EMPTY;
@@ -374,10 +360,11 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
                 prev = b[x][y];
                 count = 1;
             }
-            if (count == 4) return prev;
-        }
-    }
-    return TILE::EMPTY;
+}
+
+void print_error_message(std::string_view str)
+{
+    std::cerr << str;
 }
 
 bool is_board_full(Board &board)
