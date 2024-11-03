@@ -47,6 +47,10 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile);
 void reset_tile_count(int &count, TILE&p);
 void count_tiles(Board &b, int x, int y, int &count, TILE &prev);
 void print_error_message(std::string_view str);
+void print_player_turn(Turn &player);
+void ask_for_rematch(char &input);
+void print_exit_notice();
+
 
 struct Coord take_turn(TILE currentPlayer, Board &board);
 
@@ -63,17 +67,13 @@ int main()
     {
         Board board { 7, std::vector<TILE>(6, TILE::EMPTY) };
         Turn currentPlayer = rand() % 2 ? player2 : player1;
-        TILE winner{ EMPTY };   // there might be a different data structure for this later
+        TILE winner{ EMPTY };   
         do
         {
-            std::cout << currentPlayer.player_stats.name << "'s turn (" << get_player_char_representation(currentPlayer.player_tile) << ")\n";
-            
+            print_player_turn(currentPlayer);            
             print_board(board);
-
             currentPlayer.coord = take_turn(currentPlayer.player_tile, board);
-
             winner = has_four_in_row_tile(board, currentPlayer.coord);
-
             currentPlayer = currentPlayer.player_tile == PLAYER1 ? player2 : player1;
         } 
         while (winner == TILE::EMPTY && (is_board_full(board) == false));
@@ -82,13 +82,10 @@ int main()
 
         // Call the function to determine the winner and assign to winner
         display_winner(winner, player1.player_stats, player2.player_stats);
-      
-        std::cout << "Do you want to play again? (Yes/No): ";
-        std::cin >> playAgain;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
+        ask_for_rematch(playAgain);             // playAgain call by reference can change value      
     } while (playAgain == 'y' || playAgain == 'Y');
     
-    std::cout << "Program closing.\n";
+    print_exit_notice();
     return 0;
 }
 
@@ -365,6 +362,23 @@ void count_tiles(Board &b, int x, int y, int &count, TILE &prev)
 void print_error_message(std::string_view str)
 {
     std::cerr << str;
+}
+
+void print_player_turn(Turn &player)
+{
+    std::cout << player.player_stats.name << "'s turn (" << get_player_char_representation(player.player_tile) << ")\n";
+}
+
+void ask_for_rematch(char &input)
+{
+    std::cout << "Do you want to play again? (Yes/No): ";
+    std::cin >> input;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  
+}
+
+void print_exit_notice()
+{
+    std::cout << "Program closing.\n";
 }
 
 bool is_board_full(Board &board)
