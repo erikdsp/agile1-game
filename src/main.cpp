@@ -44,6 +44,7 @@ void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
+void print_error_message(std::string_view str);
 
 struct Coord take_turn(TILE currentPlayer, Board &board);
 
@@ -253,13 +254,13 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     int rows = b[played_tile.y].size(); // not using global const ROWS because vector is dynamic
     if (played_tile.x >= cols || played_tile.x < 0) 
     {
-        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
-        return TILE::EMPTY;  // bad call - should throw exception
+        print_error_message("Bad call to has_four_in_row_tile()\n");    // crude error handling
+        return TILE::EMPTY;                                             // bad call - should throw exception
     }
     if (played_tile.y >= rows || played_tile.y < 0) 
     {
-        std::cout << "Bad call to has_four_in_row_tile()\n";        // crude error handling
-        return TILE::EMPTY;  // bad call - should throw exception
+        print_error_message("Bad call to has_four_in_row_tile()\n");    // crude error handling
+        return TILE::EMPTY;                                             // bad call - should throw exception
     }
     TILE prev{};
     int count{0};
@@ -378,6 +379,11 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
         }
     }
     return TILE::EMPTY;
+}
+
+void print_error_message(std::string_view str)
+{
+    std::cerr << str;
 }
 
 bool is_board_full(Board &board)
