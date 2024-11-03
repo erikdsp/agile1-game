@@ -44,6 +44,7 @@ void print_board(Board &board);
 
 Coord drop_tile_action(int column, Board &b, TILE player);
 TILE has_four_in_row_tile(Board &b, Coord played_tile);
+void reset_tile_count(int &c, TILE&p);
 void count_tiles(Board &b, int x, int y, int &count, TILE &prev);
 void print_error_message(std::string_view str);
 
@@ -270,8 +271,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
 
     // check vertical
     x = played_tile.x;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     for (y = 0 ; y < rows ; y++)
         {     
             count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
@@ -280,8 +280,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
 
     // check horizontal
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     for (x = 0 ; x < cols ; x++)
         {
             count_tiles(b, x, y, count, prev);   // b, count and prev passed by reference
@@ -291,8 +290,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     // check diagonal backslash
     x = played_tile.x;
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);                // count and prev passed by reference
     while(y > 0)                                  // find x, y starting position
     {
         x--;
@@ -310,8 +308,7 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
     // check diagonal slash
     x = played_tile.x;
     y = played_tile.y;
-    prev = EMPTY;
-    count = 0;
+    reset_tile_count(count, prev);               // count and prev passed by reference
     while(y < rows-1)                            // find x, y starting position
     {
         x--;
@@ -326,6 +323,12 @@ TILE has_four_in_row_tile(Board &b, Coord played_tile)
         }
     }
     return TILE::EMPTY;
+}
+
+void reset_tile_count(int &c, TILE&p)
+{
+    p = EMPTY;
+    c = 0;
 }
 
 void count_tiles(Board &b, int x, int y, int &count, TILE &prev)
